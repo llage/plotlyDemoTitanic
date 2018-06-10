@@ -1,1 +1,1 @@
-# Demonstration of plotly. Made for a course assignment.
+Demonstration of plotly. Made for a course assignment.
