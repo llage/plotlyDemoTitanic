@@ -1,0 +1,77 @@
+---
+title: "Titanic disaster - Plotly demo"
+author: "Agelink"
+date: "June, 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Plotly demonstration
+
+```{r plot, echo = FALSE, messages = FALSE, out.width = "100%"}
+suppressMessages(library(plotly))
+titan<-as.data.frame(Titanic)
+titan$Survived<-gsub("No","-1",titan$Survived)
+titan$Survived<-gsub("Yes","1",titan$Survived)
+titan$Survived<-as.numeric(titan$Survived)
+titan$SurvivalFreq<-titan$Survived*titan$Freq
+titan$Survived<-gsub("No","fatalities",titan$Survived)
+titan$Survived<-gsub("Yes","survivors",titan$Survived)
+titan$SexAge<-as.factor(paste(titan$Sex,titan$Age))
+titan$SexAge<-factor(titan$SexAge,levels=levels(titan$SexAge)[c(1,3,2,4)])
+titan$SexAgePlural<-titan$SexAge
+titan$SexAgePlural<-gsub("Adult","Adults",titan$SexAgePlural)
+titan$SexAgePlural<-gsub("Child","Children",titan$SexAgePlural)
+titan$Class<-paste(titan$Class,"class passengers")
+titan$Class<-gsub("^C.*","Crew",titan$Class)
+rule<-function(x) {ifelse(x>-0.1,paste(x,"survivor(s)"),
+			paste(abs(x),"fatalities"))
+		}
+layout(plot_ly(titan,x=titan$Class,y=titan$SurvivalFreq,
+               color=titan$SexAge,type="bar",hoverinfo="text",
+               text= ~paste(titan$SexAgePlural,"(",titan$Class,")",
+               rule(titan$SurvivalFreq))),
+	title="Titanic disaster survival")
+```
+
+## Code
+
+```{r code, eval=FALSE}
+suppressMessages(library(plotly))
+titan<-as.data.frame(Titanic)
+titan$Survived<-gsub("No","-1",titan$Survived)
+titan$Survived<-gsub("Yes","1",titan$Survived)
+titan$Survived<-as.numeric(titan$Survived)
+titan$SurvivalFreq<-titan$Survived*titan$Freq
+titan$Survived<-gsub("No","fatalities",titan$Survived)
+titan$Survived<-gsub("Yes","survivors",titan$Survived)
+titan$SexAge<-as.factor(paste(titan$Sex,titan$Age))
+titan$SexAge<-factor(titan$SexAge,levels=levels(titan$SexAge)[c(1,3,2,4)])
+titan$SexAgePlural<-titan$SexAge
+titan$SexAgePlural<-gsub("Adult","Adults",titan$SexAgePlural)
+titan$SexAgePlural<-gsub("Child","Children",titan$SexAgePlural)
+titan$Class<-paste(titan$Class,"class passengers")
+titan$Class<-gsub("^C.*","Crew",titan$Class)
+rule<-function(x) {ifelse(x>-0.1,paste(x,"survivor(s)"),
+			paste(abs(x),"fatalities"))
+		  }
+layout(plot_ly(titan,x=titan$Class,y=titan$SurvivalFreq,
+               color=titan$SexAge,type="bar",hoverinfo="text",
+               text= ~paste(titan$SexAgePlural,"(",titan$Class,")",
+               rule(titan$SurvivalFreq))),
+	title="Titanic disaster survival")
+```
+
+## System info / Credits
+
+```{r credit}
+date()
+sessionInfo()
+```
+
+## Additional info
+
+Made for a course assignment.
