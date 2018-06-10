@@ -1,1 +1,1 @@
-# see gh-pages branch
+# Demonstration of plotly. Made for a course assignment.
